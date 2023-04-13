@@ -9,7 +9,7 @@ import com.example.examples.requests.UserRequest;
 
 @Service
 public class UsersService {
-    
+
     @Autowired
     private UsersRepository usersRepository;
 
@@ -30,15 +30,15 @@ public class UsersService {
     }
 
     public UserEntity createUser(UserRequest user) {
-        // check that email is unique and not null 
-        if (this.usersRepository.findByEmail(user.getEmail()) != null) {
+        // check that email is unique and not null
+        if (this.usersRepository.findByEmail(user.getEmail()) != null || user == null) {
             throw new RuntimeException("Email already exists");
         }
         return this.usersRepository.save(new UserEntity(user.getName(), user.getEmail()));
     }
 
     public UserEntity updateUser(UserEntity user) {
-        // check that email is unique and not null 
+        // check that email is unique and not null
         if (this.usersRepository.findByEmail(user.getEmail()) != null) {
             return this.usersRepository.save(user);
         }
@@ -49,8 +49,9 @@ public class UsersService {
         UserEntity user = this.usersRepository.findById(id);
         if (user != null) {
             this.usersRepository.delete(user);
+        } else {
+            throw new RuntimeException("user does not exist");
         }
-        throw new RuntimeException("user does not exist");
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.examples.controllers.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,12 +28,12 @@ public class UsersRestController {
     }
 
     @PostMapping("/users")
-    public UserEntity createUser(@RequestBody UserRequest user) {
-        return this.usersService.createUser(user);
+    public ResponseEntity<UserEntity> createUser(@RequestBody UserRequest user) {
+        return ResponseEntity.status(201).body(this.usersService.createUser(user));
     }
 
     @PutMapping("/users")
-    public UserEntity updateUser(UserEntity user) {
+    public UserEntity updateUser(@RequestBody UserEntity user) {
         // check that email is unique and not null
         if (this.usersService.getUserByEmail(user.getEmail()) != null && this.usersService.getUserByEmail(user.getEmail()).getId() == user.getId()) {
             return this.usersService.updateUser(user);
