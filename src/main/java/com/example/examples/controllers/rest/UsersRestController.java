@@ -19,6 +19,8 @@ import com.example.examples.entities.UserEntity;
 import com.example.examples.requests.UserRequest;
 import com.example.examples.services.UsersService;
 
+import com.example.examples.reponses.*;
+
 import org.springframework.http.HttpStatus;
 
 @RestController
@@ -39,13 +41,14 @@ public class UsersRestController {
     }
 
     @PutMapping("/users")
-    public ResponseEntity<UserEntity> updateUser(@RequestBody UserEntity user) {
+    public ResponseEntity<IUserResponse> updateUser(@RequestBody UserEntity user) {
         // check that email is unique and not null
         if (this.usersService.getUserByEmail(user.getEmail()) != null
                 && this.usersService.getUserByEmail(user.getEmail()).getId() == user.getId()) {
-            return ResponseEntity.status(200).body(this.usersService.updateUser(user));
+                    
+            return ResponseEntity.status(200).body(new UserResponse(this.usersService.updateUser(user)));
         }
-        throw new RuntimeException("user does not exist");
+        return ResponseEntity.status(400).body(new UserError("400","email already exists"));
     }
 
     @DeleteMapping("/users/{id}")
@@ -55,7 +58,7 @@ public class UsersRestController {
             this.usersService.deleteUser(id);
             return ResponseEntity.status(200).body(Map.of("message", "user deleted"));
         } else {
-            throw new RuntimeException("user does not exist");
+            return ResponseEntity.status(404).body(Map.of("message", "user not found"));
         }
     }
 

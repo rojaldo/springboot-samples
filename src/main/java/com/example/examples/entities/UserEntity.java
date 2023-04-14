@@ -8,11 +8,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
+@Table(name = "users")
 public class UserEntity {
 
     @Id
@@ -24,7 +28,7 @@ public class UserEntity {
 
     @Size(min = 5, max = 50, message = "Email must be between 5 and 50 characters")
     @Email(message = "Email must be valid")
-    @UniqueElements(message = "Email must be unique")
+    @Column(unique = true, name = "e-mail")
     private String email;
 
     public UserEntity() {
