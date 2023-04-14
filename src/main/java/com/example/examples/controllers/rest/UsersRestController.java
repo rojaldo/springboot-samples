@@ -43,12 +43,7 @@ public class UsersRestController {
     @PutMapping("/users")
     public ResponseEntity<IUserResponse> updateUser(@RequestBody UserEntity user) {
         // check that email is unique and not null
-        if (this.usersService.getUserByEmail(user.getEmail()) != null
-                && this.usersService.getUserByEmail(user.getEmail()).getId() == user.getId()) {
-                    
             return ResponseEntity.status(200).body(new UserResponse(this.usersService.updateUser(user)));
-        }
-        return ResponseEntity.status(400).body(new UserError("400","email already exists"));
     }
 
     @DeleteMapping("/users/{id}")
