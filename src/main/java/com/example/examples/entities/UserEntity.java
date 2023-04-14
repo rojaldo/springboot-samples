@@ -1,5 +1,7 @@
 package com.example.examples.entities;
 
+import org.hibernate.validator.constraints.UniqueElements;
+
 import jakarta.annotation.Generated;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -7,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -21,6 +24,7 @@ public class UserEntity {
 
     @Size(min = 5, max = 50, message = "Email must be between 5 and 50 characters")
     @Email(message = "Email must be valid")
+    @UniqueElements(message = "Email must be unique")
     private String email;
 
     public UserEntity() {
@@ -40,9 +44,6 @@ public class UserEntity {
     }
 
     public void setName(String name) {
-        if (name == null || name.isBlank() || name.isEmpty() || name.trim().isEmpty() || name.length() < 2 || name.length() > 50) {
-           System.out.println("Name cannot be null or empty");
-        }
         this.name = name;
     }
 
@@ -51,9 +52,6 @@ public class UserEntity {
     }
 
     private void setEmail(String email) {
-        if (email == null || email.isBlank() || email.isEmpty() || email.trim().isEmpty() || email.length() < 5 || email.length() > 50) {
-            System.out.println("Email cannot be null or empty");
-        }
         this.email = email;
     }
 
