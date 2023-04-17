@@ -21,14 +21,32 @@ public class BeersService {
     private RestTemplate restTemplate;
 
     // get all beers from rest api
-    public Iterable<BeerEntity> getBeersFromApi() {
-        List<BeerEntity> result = new ArrayList<BeerEntity>();
+    public void getBeersFromApi() {
         BeerResponse[] beers = restTemplate.getForObject("https://api.punkapi.com/v2/beers", BeerResponse[].class);
         for (BeerResponse beer : beers) {
                 this.beersRepository.save(new BeerEntity(beer));
-                result.add(new BeerEntity(beer));
         }
-        return result;
+    }
+
+    
+    // get all beers from database
+    public Iterable<BeerEntity> getBeers() {
+        return this.beersRepository.findAll();
+    }
+
+    // get filtered beers by abv, ibu, ebc
+    public Iterable<BeerEntity> getFilteredBeers(double abv_gt, double abv_lt, double ibu_gt, double ibu_lt, double ebc_gt, double ebc_lt) {
+        return this.beersRepository.findByAbvGreaterThanAndAbvLessThanAndIbuGreaterThanAndIbuLessThanAndEbcGreaterThanAndEbcLessThan(abv_gt, abv_lt, ibu_gt, ibu_lt, ebc_gt, ebc_lt);
+    }
+
+    // get beer by id
+    public BeerEntity getBeerById(long id) {
+        return this.beersRepository.findById(id);
+    }
+
+    // get beer by name
+    public BeerEntity getBeerByName(String name) {
+        return this.beersRepository.findByName(name);
     }
     
 }

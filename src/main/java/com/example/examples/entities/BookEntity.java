@@ -1,5 +1,7 @@
 package com.example.examples.entities;
 
+import java.util.List;
+
 import org.hibernate.validator.constraints.ISBN;
 
 import com.example.examples.requests.BookRequest;
@@ -9,10 +11,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 
 @Entity
+@Table(name = "books")
 public class BookEntity {
 
     @Id
@@ -21,13 +26,15 @@ public class BookEntity {
 
     private String title;
     private String author;
-    @Pattern(regexp = "^(?:ISBN(?:-13)?:?●)?(?=[0-9]{13}$|(?=(?:[0-9]+[-●]){4})[-●0-9]{17}$)97[89][-●]?(?:[0-9]+[-●]){3}[0-9]+$", message = "ISBN must be valid")
     private String isbn;
     @Column(columnDefinition = "LONGTEXT")
     private String description;
 
     @Min(value = -1, message = "Pages must be greater than 0")
     private int pages;
+
+    @OneToMany(mappedBy = "book")
+    private List<LendEntity> lend;
 
     public BookEntity() {
     }

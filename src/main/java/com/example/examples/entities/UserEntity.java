@@ -1,5 +1,8 @@
 package com.example.examples.entities;
 
+import java.util.List;
+
+import org.hibernate.annotations.ManyToAny;
 import org.hibernate.validator.constraints.UniqueElements;
 
 import jakarta.annotation.Generated;
@@ -8,6 +11,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.transaction.Transactional;
@@ -30,6 +35,9 @@ public class UserEntity {
     @Email(message = "Email must be valid")
     @Column(unique = true, name = "e-mail")
     private String email;
+
+    @OneToMany(mappedBy = "user")
+    private List<LendEntity> lend;
 
     public UserEntity() {
     }

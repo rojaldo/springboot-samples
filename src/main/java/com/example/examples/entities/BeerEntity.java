@@ -13,6 +13,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
@@ -23,6 +24,7 @@ import jakarta.validation.constraints.Size;
 Root root = om.readValue(myJsonString, Root.class); */
 
 @Entity
+@Table(name = "beers")
 public class BeerEntity{
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.AUTO)

@@ -1,9 +1,12 @@
 package com.example.examples;
 
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
+
+import com.example.examples.services.BeersService;
 
 @SpringBootApplication
 public class ExamplesApplication {
@@ -18,8 +21,10 @@ public class ExamplesApplication {
 	}
 
 	@Bean
-	public String getBaseUrl() {
-		return "https://api.punkapi.com/v2/beers";
+	public CommandLineRunner getBeersFromRest(BeersService beersService) {
+		return (args) -> {
+			beersService.getBeersFromApi();
+		};
 	}
 
 }

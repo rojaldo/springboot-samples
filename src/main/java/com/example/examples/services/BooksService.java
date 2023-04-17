@@ -17,6 +17,10 @@ public class BooksService {
         return this.booksRepository.findAll();
     }
 
+    public BookEntity getBookById(long id){
+        return this.booksRepository.findById(id);
+    }
+
     public BookEntity creaBook(BookRequest book) {
         // check that isbn is unique and not null
         if (this.booksRepository.findByIsbn(book.getIsbn()) != null || book == null) {
