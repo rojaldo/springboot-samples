@@ -1,11 +1,13 @@
 package com.example.examples.entities;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.validator.constraints.URL;
 
 import com.example.examples.reponses.BeerResponse;
 import com.example.examples.requests.BeerRequest;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.annotation.Generated;
@@ -13,6 +15,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -53,6 +56,10 @@ public class BeerEntity{
     private double ibu;
     @Min(0)
     private double ebc;
+
+    @ManyToMany(mappedBy = "beers")
+    @JsonIgnore
+    private List<BeerSalesEntity> beerSales;
 
     public BeerEntity() {
     }
@@ -167,6 +174,10 @@ public class BeerEntity{
 
     public void setFirstBrewed(String firstBrewed) {
         this.firstBrewed = firstBrewed;
+    }
+
+    public List<BeerSalesEntity> getBeerSales() {
+        return beerSales;
     }
 
 }

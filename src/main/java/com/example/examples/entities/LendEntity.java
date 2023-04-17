@@ -10,9 +10,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
 
 @Entity
 @Table(name = "lends")
+@Getter
 public class LendEntity {
     
     @Id
@@ -48,6 +50,7 @@ public class LendEntity {
         return "LendEntity [book=" + book + ", id=" + id + ", lendDate=" + lendDate + ", returnDate=" + returnDate
                 + ", status=" + status + ", user=" + user + "]";
     }
+
 
     
 }

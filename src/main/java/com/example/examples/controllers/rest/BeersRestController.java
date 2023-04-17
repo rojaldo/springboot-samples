@@ -7,11 +7,15 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.examples.entities.BeerEntity;
+import com.example.examples.entities.BeerSalesEntity;
+import com.example.examples.requests.BeerSalesRequest;
 import com.example.examples.services.BeersService;
 
 @RestController
@@ -45,6 +49,17 @@ public class BeersRestController {
         }
         
         return ResponseEntity.status(200).body(this.beersService.getFilteredBeers(abv_gt, abv_lt, ibu_gt, ibu_lt, ebc_gt, ebc_lt));
+    }
+
+    @GetMapping("/beers/sales")
+    public ResponseEntity<Iterable<BeerSalesEntity>> getBeersSales() {
+        return ResponseEntity.status(200).body(this.beersService.getBeersSales());
+    }
+
+    @PostMapping("/beers/sales")
+    public ResponseEntity<BeerSalesEntity> createBeerSales(@RequestBody BeerSalesRequest beerSalesRequest) {
+        BeerSalesEntity beerSalesEntity = this.beersService.createBeerSale(beerSalesRequest);
+        return ResponseEntity.status(201).body(beerSalesEntity);
     }
     
 }

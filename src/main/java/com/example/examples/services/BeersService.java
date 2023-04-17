@@ -2,20 +2,27 @@ package com.example.examples.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.examples.entities.BeerEntity;
+import com.example.examples.entities.BeerSalesEntity;
 import com.example.examples.reponses.BeerResponse;
+import com.example.examples.repositories.BeerSalesRepository;
 import com.example.examples.repositories.BeersRepository;
+import com.example.examples.requests.BeerSalesRequest;
 
 @Service
 public class BeersService {
 
     @Autowired
     private BeersRepository beersRepository;
+
+    @Autowired
+    private BeerSalesRepository beerSalesRepository;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -47,6 +54,26 @@ public class BeersService {
     // get beer by name
     public BeerEntity getBeerByName(String name) {
         return this.beersRepository.findByName(name);
+    }
+
+    // get beer sales
+    public Iterable<BeerSalesEntity> getBeersSales() {
+        return this.beerSalesRepository.findAll();
+    }
+
+    // get beer sales by id
+    public BeerSalesEntity getBeerSaleById(long id){
+        return this.beerSalesRepository.findById(id);
+    }
+
+    // create beer sale
+    public BeerSalesEntity createBeerSale(BeerSalesRequest beerSale) {
+        ArrayList<BeerEntity> beers = new ArrayList<BeerEntity>(); 
+        for (Long beer : beerSale.beers) {
+            Optional<BeerEntity> beerEntity = this.beersRepository.findById(beer);
+            beers.add(beerEntity.get());
+        }
+        return this.beerSalesRepository.save(new BeerSalesEntity(beers, beerSale.price));
     }
     
 }
