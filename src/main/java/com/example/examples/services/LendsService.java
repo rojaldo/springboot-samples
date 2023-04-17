@@ -1,6 +1,7 @@
 package com.example.examples.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.example.examples.entities.BookEntity;
 import com.example.examples.entities.LendEntity;
@@ -10,6 +11,7 @@ import com.example.examples.repositories.LendsRepository;
 import com.example.examples.repositories.UsersRepository;
 import com.example.examples.requests.LendRequest;
 
+@Service
 public class LendsService {
 
     @Autowired

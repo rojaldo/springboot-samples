@@ -43,5 +43,11 @@ public class LendEntity {
         this.status = 0;
     }
 
+    @Override
+    public String toString() {
+        return "LendEntity [book=" + book + ", id=" + id + ", lendDate=" + lendDate + ", returnDate=" + returnDate
+                + ", status=" + status + ", user=" + user + "]";
+    }
+
     
 }

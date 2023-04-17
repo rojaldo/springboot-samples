@@ -21,12 +21,15 @@ public class LendsRestController {
 
     @GetMapping("/lends")
     public ResponseEntity<Iterable<LendEntity>> getLends() {
+        System.out.println(this.lendsService.getLends());
         return ResponseEntity.status(200).body(this.lendsService.getLends());
     }
 
     @PostMapping("/lends")
     public ResponseEntity<LendEntity> createLend(@RequestBody LendRequest lend ) {
-        return ResponseEntity.status(201).body(this.lendsService.createLend(lend));
+        LendEntity lendEntity = this.lendsService.createLend(lend);
+        System.out.println(lendEntity);
+        return ResponseEntity.status(201).body(lendEntity);
     }
 
 }
