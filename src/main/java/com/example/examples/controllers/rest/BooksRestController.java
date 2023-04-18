@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.examples.entities.BookEntity;
@@ -23,7 +24,15 @@ public class BooksRestController {
     private BooksService booksService;
 
     @GetMapping("/books")
-    public ResponseEntity<Iterable<BookEntity>> getBooks() {
+    public ResponseEntity<Iterable<BookEntity>> getBooks(@RequestParam(required = false) String author) {
+        if (author != null) {
+            Iterable<BookEntity> books = this.booksService.getBooksByAuthor(author);
+            if (books != null) {
+                return ResponseEntity.status(200).body(books);
+            }else {
+                return ResponseEntity.status(400).body(null);
+            }
+        }
         return ResponseEntity.status(200).body(this.booksService.getBooks());
     }
 
@@ -39,6 +48,14 @@ public class BooksRestController {
 
     @DeleteMapping("/books/{id}")
     public ResponseEntity<BookEntity> deleteBook(@PathVariable long id) {
-        return ResponseEntity.status(200).body(this.booksService.deleteBook(id));
+        // find book
+        BookEntity book = this.booksService.getBookById(id);
+        if (book != null) {
+            this.booksService.deleteBook(id);
+            return ResponseEntity.status(204).body(null);
+        }else {
+            return ResponseEntity.status(404).body(null);
+        }
+        
     }
 }
