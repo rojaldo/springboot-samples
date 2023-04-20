@@ -17,6 +17,120 @@ tags:
   - name: books
     description: Operations about books
 paths:
+  /tdb/questions:
+    get:
+      summary: Get at most 10 question from the database
+      operationId: getQuestions
+      tags:
+        - tdb
+      parameters:
+        - name: category
+          in: query
+          description: find questions by category
+          required: false
+          schema:
+            type: string
+        - name: difficulty
+          in: query
+          description: find questions by difficulty
+          required: false
+          schema:
+            type: string
+        - name: amount
+          in: query
+          description: the amount of questions to return (max 10)
+          required: false
+          schema:
+            type: integer
+            format: int64
+            example: 7
+      responses:
+        '200':
+          description: Returns all questions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuestionResponse'
+        '400':
+          description: No questions found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error400'
+    post:
+      summary: Create a question
+      operationId: createQuestion
+      tags:
+        - tdb
+      requestBody:
+        description: Question object that needs to be added
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionRequest'
+      responses:
+        '201':
+          description: Question created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorIsbn'
+  /tdb/questions/{id}:
+    put:
+      summary: Update a question
+      operationId: updateQuestion
+      tags:
+        - tdb
+      requestBody:
+        description: Question object that needs to be updated
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionResponse'
+      responses:
+        '200':
+          description: Question updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionResponse'
+        '409':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error409'
+    delete:
+      summary: Delete a question
+      operationId: deleteQuestion
+      tags:
+        - tdb
+      parameters:
+        - name: id
+          in: path
+          description: id of question to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '204':
+          description: No content
+        '404':
+          description: Question not found
+
+
   /books:
     get:
       summary: Get all books
@@ -272,6 +386,50 @@ components:
         email:
           type: string
           example: johndoe@email.com
+    QuestionRequest:
+      type: object
+      properties:
+        question:
+          type: string
+          example: What is the meaning of life?
+        right_answer:
+          type: string
+          example: 42
+        wrong_answers:
+          type: array
+          items:
+            type: string
+            example: [nothing, 0, 21]
+        category:
+          type: string
+          example: Science
+        difficulty:
+          type: string
+          example: Easy
+    QuestionResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        question:
+          type: string
+          example: What is the meaning of life?
+        right_answer:
+          type: string
+          example: 42
+        wrong_answers:
+          type: array
+          items:
+            type: string
+            example: nothing, 0, 21
+        category:
+          type: string
+          example: Science
+        difficulty:
+          type: string
+          example: Easy
     error500:
       type: object
       properties:
