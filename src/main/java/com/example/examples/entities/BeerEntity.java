@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.validator.constraints.URL;
 
+import com.example.examples.forms.BeerForm;
 import com.example.examples.reponses.BeerResponse;
 import com.example.examples.requests.BeerRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -85,6 +86,17 @@ public class BeerEntity{
         this.abv = request.getAbv();
         this.ibu = request.getIbu();
         this.ebc = request.getEbc();
+    }
+
+    public BeerEntity(BeerForm form) {
+        this.name = form.getName();
+        this.tagline = form.getTagline();
+        this.firstBrewed = form.getFirstBrewed();
+        this.description = form.getDescription();
+        this.imageUrl = form.getImageUrl();
+        this.abv = form.getAbv();
+        this.ibu = form.getIbu();
+        this.ebc = form.getEbc();
     }
 
     public BeerEntity(BeerResponse beer) {

@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.example.examples.entities.BeerEntity;
 import com.example.examples.entities.BeerSalesEntity;
+import com.example.examples.forms.BeerForm;
 import com.example.examples.reponses.BeerResponse;
 import com.example.examples.repositories.BeerSalesRepository;
 import com.example.examples.repositories.BeersRepository;
@@ -39,6 +40,10 @@ public class BeersService {
     // get all beers from database
     public Iterable<BeerEntity> getBeers() {
         return this.beersRepository.findAll();
+    }
+
+    public BeerEntity createBeer(BeerForm beer) {
+        return this.beersRepository.save(new BeerEntity(beer));
     }
 
     // get filtered beers by abv, ibu, ebc
