@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.examples.services.BeersService;
+import com.example.examples.services.TdbService;
 
 @SpringBootApplication
 public class ExamplesApplication {
@@ -21,10 +22,12 @@ public class ExamplesApplication {
 	}
 
 	@Bean
-	public CommandLineRunner getBeersFromRest(BeersService beersService) {
+	public CommandLineRunner getDataFromRest(BeersService beersService, TdbService tdbService) {
 		return (args) -> {
 			beersService.getBeersFromApi();
+			tdbService.getQuestionsFromApi();
 		};
 	}
+
 
 }
